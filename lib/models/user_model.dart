@@ -10,10 +10,10 @@ class UserModel{
   String createdAt;
   String lastLogin;
   String level;
-  TeamModel team;
+  //TeamModel team;
 
   UserModel({
    this.displayName, this.email, this.photoUrl, this.coins, this.followers,
-    this.following, this.createdAt, this.lastLogin, this.level, this.team
+    this.following, this.createdAt, this.lastLogin, this.level, //this.team
   });
 }

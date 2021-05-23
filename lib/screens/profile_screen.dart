@@ -37,6 +37,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         listen: false
     );
 
+    _firebaseMethods.getUserProfileInformation('uid', context);
+
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
