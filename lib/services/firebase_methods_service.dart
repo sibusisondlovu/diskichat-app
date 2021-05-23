@@ -16,23 +16,32 @@ class FirebaseMethodsServices {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
             if (documentSnapshot.exists) {
-              print('Document data: ${documentSnapshot.data()}');
-              _userModel.displayName =  'My username';
+              print('Document data: ${documentSnapshot['team']['teamLogo']}');
+
+              TeamModel teamModel = new TeamModel ();
+
+              teamModel.teamLogo = documentSnapshot['team']['teamLogo'];
+              teamModel.teamName = documentSnapshot['team']['teamName'];
+              teamModel.league = documentSnapshot['team']['league'];
+
+              _userModel = UserModel(
+                displayName: documentSnapshot['displayName'],
+                coins: documentSnapshot['coins'],
+                createdAt: documentSnapshot['createdAt'],
+                followers: documentSnapshot['followers'],
+                following: documentSnapshot['following'],
+                lastLogin: documentSnapshot['lastLogin'],
+                level: documentSnapshot['level'],
+                photoUrl: documentSnapshot['photoUrl'],
+                email: documentSnapshot['email'],
+                team: teamModel
+              );
+
             } else {
               print('Document does not exist on the database');
-              _userModel = UserModel(
-                  displayName: 'Sibusiso Testing',
-                  coins: 0,
-                  createdAt: '152030403040506',
-                  followers: 100,
-                  following: 493,
-                  lastLogin: '16499393949559',
-                  level: 'SEMI-PRO',
-                  photoUrl: '',
-                  email: 'sibusiso@ndlovuy.com',
-              );
             }
           }).catchError((onError) {
+            print(onError);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ErrorScreen(error: onError)),

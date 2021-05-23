@@ -34,8 +34,6 @@ class MyApp extends StatelessWidget {
         home: FutureBuilder(
           future: _initialization,
           builder: (context, snapshot) {
-            // Check for errors
-            print('testing');
             if (snapshot.hasError) {
               print(snapshot.error);
               return ErrorScreen(error: snapshot.error);

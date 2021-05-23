@@ -10,6 +10,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  bool isAuthenticating = false;
+
   @override
   Widget build(BuildContext context) {
 
@@ -20,62 +23,87 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/login_screen_bg.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Column(
+          ///crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Image.asset('assets/images/backgrounds/sign_in_bg.jpg'),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text('Welcome \nChoose sign in method to continue'),
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: ElevatedButton(onPressed: () async {
-                          bool success = await _loginService.signInWithGoogle();
+            SizedBox(
+              height: 30,
+            ),
+            Image.asset("assets/images/app_logo.png", width: 150, height: 150,),
+            Text('Welcome to Diski Chat',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+              color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold
+            ),),
+            isAuthenticating? SizedBox(
+              height: 50,width: 50,
+              child: CircularProgressIndicator(),
+            ): Container(),
+            Column(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ElevatedButton(onPressed: () async {
 
-                          if (success) {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(
-                                    builder: (context) => MainLayoutScreen() ));
-                          }
-                        },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                  return Colors.redAccent;// Use the component's default.
-                                },
-                              ),
-                            ),
-                            child: Text(
-                                'Sign In With Google'
-                            )),
+                    setState(() {
+                      isAuthenticating = true;
+                    });
+                    bool success = await _loginService.signInWithGoogle();
+
+                    if (success) {
+                      setState(() {
+                        isAuthenticating = false;
+                      });
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(
+                              builder: (context) => MainLayoutScreen() ));
+                    }
+                  },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                            return Colors.redAccent;// Use the component's default.
+                          },
+                        ),
                       ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: ElevatedButton(onPressed: (){},
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                  return Colors.blueAccent;// Use the component's default.
-                                },
-                              ),
-                            ),
-                            child: Text(
-                                'Sign In With Facebook'
-                            )),
+                      child: Text(
+                          'Sign In With Google'
+                      )),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ElevatedButton(onPressed: (){},
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                            return Colors.blueAccent;// Use the component's default.
+                          },
+                        ),
                       ),
-                      Text('Terms and conditions, privacy policy acknowledgement'),
-                    ],
-                  ),
-                  Text('Don\'t have an account? Sign Up'),
-                ],
-              ),
-            )
+                      child: Text(
+                          'Sign In With Facebook'
+                      )),
+                ),
+                Text('Terms and conditions, privacy policy acknowledgement',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12
+                ),),
+              ],
+            ),
+            Text('Don\'t have an account? Sign Up', textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white
+            ),),
           ],
         ),
       ),

@@ -47,6 +47,11 @@ class LoginService {
         'level': 'SEMI-PRO',
         'photoUrl': userCredential.user.photoURL,
         'email': userCredential.user.email,
+        'team' : {
+          'teamName': 'Amazulu FC',
+          'teamLogo': 'https://img2.pngio.com/amazulu-football-club-in-football-manager-2019-amazulu-fc-png-180_180.png',
+          'league': 'DSTV Premiership'
+        }
       };
 
       _firebaseMethodsServices.createUserProfile(userCredential.user.uid, userProfileInformation);

@@ -1,5 +1,6 @@
 import 'package:diski_live/services/firebase_methods_service.dart';
 import 'package:diski_live/services/login_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         listen: false
     );
 
-    _firebaseMethods.getUserProfileInformation('uid', context);
+    _firebaseMethods.getUserProfileInformation(FirebaseAuth.instance.currentUser.uid, context);
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -70,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       children: [
                         Text(
-                          '31k',
+                        _firebaseMethods.userModelProfile.coins.toString(),
                           style: TextStyle(fontSize: 28),
                         ),
                         Text('COINS')
@@ -87,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       children: [
                         Text(
-                          '188',
+                          _firebaseMethods.userModelProfile.followers.toString(),
                           style: TextStyle(fontSize: 28),
                         ),
                         Text('FOLLOWERS')
@@ -104,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       children: [
                         Text(
-                          '900',
+                          _firebaseMethods.userModelProfile.following.toString(),
                           style: TextStyle(fontSize: 28),
                         ),
                         Text('FOLLOWING')
@@ -122,9 +123,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Card(
             child: ListTile(
-              leading: Image.asset('assets/images/home_team_logo.png'),
-              title: Text('Mamelodi Sundowns'),
-              subtitle: Text('DSTV Premiership'),
+              leading: Image.network(_firebaseMethods.userModelProfile.team.teamLogo),
+              title: Text(_firebaseMethods.userModelProfile.team.teamName),
+              subtitle: Text(_firebaseMethods.userModelProfile.team.league),
               trailing: Icon(Icons.edit),
             ),
           )
